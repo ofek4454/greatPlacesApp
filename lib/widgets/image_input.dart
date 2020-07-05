@@ -21,6 +21,14 @@ class _ImageInputState extends State<ImageInput> {
     final picker = ImagePicker();
     final pickedImage =
         await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+    if (pickedImage == null) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Image doesnt taken, Please try again.'),
+        ),
+      );
+      return;
+    }
     setState(() {
       _loadedImage = File(pickedImage.path);
     });
