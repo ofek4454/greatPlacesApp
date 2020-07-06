@@ -19,8 +19,31 @@ class _ImageInputState extends State<ImageInput> {
 
   Future<void> _takePicture() async {
     final picker = ImagePicker();
-    final pickedImage =
-        await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+    final pickedImage = await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('choose image source'),
+              actions: [
+                FlatButton(
+                  child: Text('Galery'),
+                  onPressed: () async {
+                    final photo = await picker.getImage(
+                        source: ImageSource.gallery, maxWidth: 600);
+                    Navigator.of(ctx).pop(photo);
+                  },
+                ),
+                FlatButton(
+                  child: Text('Camera'),
+                  onPressed: () async {
+                    final photo = await picker.getImage(
+                        source: ImageSource.camera, maxWidth: 600);
+                    Navigator.of(ctx).pop(photo);
+                  },
+                )
+              ],
+            ));
+    //await picker.getImage(source: ImageSource.camera, maxWidth: 600);
+
     if (pickedImage == null) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
